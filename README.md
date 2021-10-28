@@ -4,6 +4,9 @@
 
 ![png](https://raw.githubusercontent.com/anisimovdd/triad_serv/master/triad_serv.png)
 
+
+P.S.: Если после прочтения README.md остались вопросы, то не стоит бояться заглянуть в код – он с пояснениями.
+
 # preProcessing_serv ( x.x.x.x : 5002 )
 
 1.	Подключается к Mosquitto и подписывается на MQTT_TOPIC = "glove":
