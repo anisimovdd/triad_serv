@@ -11,15 +11,6 @@ MQTT_TOPIC = "robohand"
 @app.route('/')
 def eH_serv():
 	
-	e1_min = 12
-	e1_max = 45
-	
-	e2_min = 145
-	e2_max = 654
-	
-	e3_min = 854
-	e3_max = 1245
-	
 	# Подключение + Подписка на TOPICS
 	def on_connect(client, userdata, flags, rc):
 		if rc == 0:
@@ -46,17 +37,17 @@ def eH_serv():
 		# Sn - показания датчиков давления
 		
 		# Событие 1 -- пожать руку
-		if (e1_min < message_arr[0] < e1_max)
+		if (29 < message_arr[0] < 45)
 			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 
 		# Событие 2 -- взять предмет
-		elif (e2_min < message_arr[5] < e1_max)
+		elif (145 < message_arr[5] < 654)
 			publish.single("eH_serv", payload = "event_2", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
 		# Событие 3 -- показать жест
-		elif (e3_min < message_arr[0] < e3_max)
+		elif (800 < message_arr[0] < 1455)
 			publish.single("eH_serv", payload = "event_3", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
