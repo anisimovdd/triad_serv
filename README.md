@@ -2,7 +2,7 @@
 
 Описание временно некорректно в связи с переходом на MQTT. Каждая из папок - отдельный Flask-сервер со своим окружением. Так я себе представляю разделение на микросервисы.
 
-![png](https://raw.githubusercontent.com/anisimovdd/triad_serv/master/triad_serv.drawio.png)
+![png](https://raw.githubusercontent.com/anisimovdd/triad_serv/master/triad_serv.png)
 
 # preProcessing_serv (192:168:0:10)
 
