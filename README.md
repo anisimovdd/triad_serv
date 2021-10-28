@@ -103,7 +103,7 @@
 			else:
 				print("Неизвестное событие")
 
-# eventHandling_serv (192:168:0:20)
+# eventHandling_serv ( x.x.x.x : 5001)
 
 1.	Подключается к Mosquitto и подписывается на MQTT_TOPIC = "robohand":
 
