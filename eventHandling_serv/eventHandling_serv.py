@@ -1,39 +1,74 @@
 # python eventHandling_serv.py # запуск сервера
-# 192:168:0:20
-
-from flask import Flask, jsonify, request, abort
+from flask import Flask
+import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 
 app = Flask(__name__)
+MQTT_BROKER = "127.0.0.1"
+MQTT_PORT = 1883
+MQTT_TOPIC = "robohand"
 
-@app.route('/event_1', methods=['POST'])
-def event_1():
-	sensor_1 = request.json
-	min_int = 12 # крайние значения диапазона,
-	max_int = 45 # полученные опытным путём
-	if (min_int < sensor_1 < max_int)
-		# curl -i -X GET -H 'Content-Type: application/json' -d '{\"req_1\": \"1\"}' http://192:168:0:15:5000/event_1
-	else
-		abort 400
+@app.route('/')
+def eH_serv():
+	
+	e1_min = 12
+	e1_max = 45
+	
+	e2_min = 145
+	e2_max = 654
+	
+	e3_min = 854
+	e3_max = 1245
+	
+	# Подключение + Подписка на TOPICS
+	def on_connect(client, userdata, flags, rc):
+		if rc == 0:
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			client.subscribe(MQTT_TOPIC)
+		else:
+			print("🔴 Connection failed")
+			
+	# Обработка сообщений от роборуки	
+	def on_message(client, userdata, msg):
+		message = str(msg.payload, 'utf-8')
+		print("> TOPIC: " + msg.topic + "\n" + "📩 MESSAGE: " + message)
+		
+		# Данные с датчиков роборуки также будут просто разделены запятой. В дальнейшем будет
+		# необходимо исправить на отправку массивом. Но пока, чтобы Бахадыру лишний раз
+		# не пришлось переписывать код, то преобразование в массив сделаем на стороне сервера.
+		
+		# Преобразование в массив
+		message_arr = message.split(',')
+		
+		# Предварительно массив будет иметь следующюю структуру:
+		# message_arr = [ T1, T2, T3, T4, T5, S1, S2, S3, S4, S5 ], где
+		# Tn - показания датчиков температуры
+		# Sn - показания датчиков давления
+		
+		# Событие 1 -- пожать руку
+		if (e1_min < message_arr[0] < e1_max)
+			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
+			# Добавить задержку в приёме новых сообщений на выполнение действия
 
-@app.route('/event_2', methods=['POST'])
-def event_2():
-	sensor_2 = request.json
-	min_int = 1154 # крайние значения диапазона,
-	max_int = 8975 # полученные опытным путём
-	if (min_int < sensor_2 < max_int)
-		# curl -i -X GET -H 'Content-Type: application/json' -d '{\"req_2\": \"1\"}' http://192:168:0:15:5000/event_2
-	else
-		abort 400
-
-@app.route('/event_3', methods=['POST'])
-def event_3():
-	sensor_3 = request.json
-	min_int = 445588 # крайние значения диапазона,
-	max_int = 454848 # полученные опытным путём
-	if (min_int < sensor_3 < max_int)
-		# curl -i -X GET -H 'Content-Type: application/json' -d '{\"req_3\": \"1\"}' http://192:168:0:15:5000/event_3
-	else
-		abort 400
+		# Событие 2 -- взять предмет
+		elif (e2_min < message_arr[5] < e1_max)
+			publish.single("eH_serv", payload = "event_2", hostname = "127.0.0.1", port = 1883)
+			# Добавить задержку в приёме новых сообщений на выполнение действия
+		
+		# Событие 3 -- показать жест
+		elif (e3_min < message_arr[0] < e3_max)
+			publish.single("eH_serv", payload = "event_3", hostname = "127.0.0.1", port = 1883)
+			# Добавить задержку в приёме новых сообщений на выполнение действия
+		
+		# Неизвестное событие
+		else
+			print("Неизвестное событие")
+	
+	client = mqtt.Client()
+	client.on_connect = on_connect
+	client.on_message = on_message
+	client.connect(MQTT_BROKER, MQTT_PORT, 60)
+	client.loop_forever()
 
 if __name__ == '__main__':
     app.run(host='192.168.0.20', port=5000) # https://codex.so/python-flask
