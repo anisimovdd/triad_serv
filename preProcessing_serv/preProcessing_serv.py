@@ -16,8 +16,9 @@ def pP_serv():
 	# Подключение + Подписка на TOPICS
 	def on_connect(client, userdata, flags, rc):
 		if rc == 0:
-			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + str(MQTT_PORT) + ")")
 			client.subscribe(MQTT_TOPIC)
+			print("Waiting for any messages with TOPIC='" + MQTT_TOPIC + "'...")
 		else:
 			print("🔴 Connection failed")
 

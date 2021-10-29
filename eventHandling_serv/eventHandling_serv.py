@@ -1,4 +1,4 @@
-# python eventHandling_serv.py # запуск сервера
+# Запуск сервера: python eventHandling_serv.py
 from flask import Flask
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
@@ -14,8 +14,9 @@ def eH_serv():
 	# Подключение + Подписка на TOPICS
 	def on_connect(client, userdata, flags, rc):
 		if rc == 0:
-			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + str(MQTT_PORT) + ")")
 			client.subscribe(MQTT_TOPIC)
+			print("Waiting for any messages with TOPIC='" + MQTT_TOPIC + "'...")
 		else:
 			print("🔴 Connection failed")
 			
@@ -37,22 +38,22 @@ def eH_serv():
 		# Sn - показания датчиков давления
 		
 		# Событие 1 -- пожать руку
-		if (29 < message_arr[0] < 45)
+		if (29 < message_arr[0] < 45):
 			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 
 		# Событие 2 -- взять предмет
-		elif (145 < message_arr[5] < 654)
+		elif (145 < message_arr[5] < 654):
 			publish.single("eH_serv", payload = "event_2", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
 		# Событие 3 -- показать жест
-		elif (800 < message_arr[0] < 1455)
+		elif (800 < message_arr[0] < 1455):
 			publish.single("eH_serv", payload = "event_3", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
 		# Неизвестное событие
-		else
+		else:
 			print("Неизвестное событие")
 	
 	client = mqtt.Client()
@@ -62,4 +63,4 @@ def eH_serv():
 	client.loop_forever()
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.20', port=5000) # https://codex.so/python-flask
+    app.run(host='127.0.0.1', port=5000) # https://codex.so/python-flask
