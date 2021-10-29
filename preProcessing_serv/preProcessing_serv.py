@@ -51,6 +51,7 @@ def pP_serv():
 			# Eсли единый массив ещё не заполнялся или был очищен
 			if len(arr) == 0:
 				publish.single("dS_serv", payload = msg.payload, hostname = "127.0.0.1", port = 1883)
+				print("Live broadcast MODE. Send to robohand.")
 			# Если единый массив сформирован
 			else:
 				# Обработка единого массива через алгоритм сглаживания
@@ -61,7 +62,7 @@ def pP_serv():
 				
 				# Отправка обработанного массива на dS_serv
 				publish.single("pP_serv", payload = arr, hostname = "127.0.0.1", port = 1883)
-				print("📧 SEND: " + arr)
+				print("Learning MODE. End of array formation. Send to dataStore_serv. " + str(arr) )
 				# Очистка единого массива
 				arr.clear()
 
@@ -69,6 +70,7 @@ def pP_serv():
 		else:
 			# Формирование единого массива
 			arr.append(message_arr)
+			print("Learning MODE. Array formation.")
 
 	client = mqtt.Client()
 	client.on_connect = on_connect
