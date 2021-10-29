@@ -13,8 +13,9 @@
 
 		def on_connect(client, userdata, flags, rc):
 		if rc == 0:
-			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + str(MQTT_PORT) + ")")
 			client.subscribe(MQTT_TOPIC)
+			print("Waiting for any messages with TOPIC='" + MQTT_TOPIC + "'...")
 		else:
 			print("🔴 Connection failed")
 
@@ -66,8 +67,9 @@
 
 		def on_connect(client, userdata, flags, rc):
 		if rc == 0:
-			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + str(MQTT_PORT) + ")")
 			client.subscribe(MQTT_TOPIC)
+			print("Waiting for any messages with TOPIC='" + MQTT_TOPIC[0][0] + "','" + MQTT_TOPIC[1][0] + "'...")
 		else:
 			print("🔴 Connection failed")
 			
@@ -84,7 +86,7 @@
 			if msg.payload == "event_1":
 				event_1_arr = arr[0]
 				# Преобразуем в строку с разделением запятой и передаём на роборуку
-				for e in event_1_arr
+				for e in event_1_arr:
 					e_str = ','.join(map(str, e))
 					publish.single("dS_serv", payload = e_str, hostname = "127.0.0.1", port = 1883)
 					print("📧 SEND: " + e_str)
@@ -109,8 +111,9 @@
 
 		def on_connect(client, userdata, flags, rc):
 		if rc == 0:
-			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + MQTT_PORT + ")")
+			print("🟢 Connected to Mosquitto (" + MQTT_BROKER + ":" + str(MQTT_PORT) + ")")
 			client.subscribe(MQTT_TOPIC)
+			print("Waiting for any messages with TOPIC='" + MQTT_TOPIC + "'...")
 		else:
 			print("🔴 Connection failed")
 
@@ -128,20 +131,20 @@
 3.	Разделение событий происходит по совокупности параметров и их значений. В случае удовлетворения предопределённых условий отправляется запрос на dataStore_serv:
 		
 		# Событие 1 -- пожать руку
-		if (29 < message_arr[0] < 45)
+		if (29 < message_arr[0] < 45):
 			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 
 		# Событие 2 -- взять предмет
-		elif (145 < message_arr[5] < 654)
+		elif (145 < message_arr[5] < 654):
 			publish.single("eH_serv", payload = "event_2", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
 		# Событие 3 -- показать жест
-		elif (800 < message_arr[0] < 1455)
+		elif (800 < message_arr[0] < 1455):
 			publish.single("eH_serv", payload = "event_3", hostname = "127.0.0.1", port = 1883)
 			# Добавить задержку в приёме новых сообщений на выполнение действия
 		
 		# Неизвестное событие
-		else
+		else:
 			print("Неизвестное событие")
