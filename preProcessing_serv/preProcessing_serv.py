@@ -47,7 +47,7 @@ def pP_serv():
 		# единый массив должен быть отправлен на dS_serv.
 		
 		# Если поступил массив с IO_button = 0
-		if message_arr[8] == 0:
+		if message_arr[8] == "0":
 			# Eсли единый массив ещё не заполнялся или был очищен
 			if len(arr) == 0:
 				publish.single("dS_serv", payload = msg.payload, hostname = "127.0.0.1", port = 1883)
@@ -61,7 +61,10 @@ def pP_serv():
 				# закомментирован. В дальнейшем, конечно же, обработка будет на сервере.
 				
 				# Отправка обработанного массива на dS_serv
-				publish.single("pP_serv", payload = arr, hostname = "127.0.0.1", port = 1883)
+				publish.single("pP_serv", payload = str(arr), hostname = "127.0.0.1", port = 1883)
+				
+				# ОШИБКА payload must be string, bytearray, int, float or None.
+				
 				print("Learning MODE. End of array formation. Send to dataStore_serv. " + str(arr) )
 				# Очистка единого массива
 				arr.clear()

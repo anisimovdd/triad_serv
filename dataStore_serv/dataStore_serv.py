@@ -7,6 +7,7 @@ app = Flask(__name__)
 MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = [["pP_serv", 0], ["eH_serv", 0]]
+count = 0
 
 @app.route('/')
 def dS_serv():
@@ -31,6 +32,12 @@ def dS_serv():
 		if msg.topic == "pP_serv":
 			# Добавить в общий массив
 			arr.append(msg.payload)
+			global count
+			print("Writing to arr[" + str(count) + "]")
+			count = count + 1
+			
+			# Надо преобразовать из STRING в LIST с помощью strip!!!!!!!!!!!
+			
 		# Запрос события от eH_serv
 		else:
 			# Событие 1 -- пожать руку
