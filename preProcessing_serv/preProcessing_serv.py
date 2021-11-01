@@ -45,7 +45,7 @@ def pP_serv():
 		if message_arr[8] == 0:
 			# Eсли единый массив ещё не заполнялся или был очищен
 			if len(arr) == 0:
-				publish.single("dS_serv", payload = msg.payload, hostname = "127.0.0.1", port = 1883)
+				publish.single("dS_serv", payload = message, hostname = "127.0.0.1", port = 1883)
 				print("Live broadcast MODE. Send to robohand.")
 			# Если единый массив сформирован
 			else:
