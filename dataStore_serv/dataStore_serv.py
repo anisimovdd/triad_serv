@@ -26,46 +26,45 @@ def dS_serv():
 	# Обработка полученных сообщений	
 	def on_message(client, userdata, msg):
 		message = str(msg.payload, 'utf-8')
-		print("> TOPIC: " + msg.topic + "\n" + "📩 MESSAGE: " + message)
-		
+		print("\n> TOPIC: " + msg.topic + " 📩 MESSAGE: " + message)
+
 		# Запрос на запись от pP_serv
 		if msg.topic == "pP_serv":
+			m1 = message.replace("[[", "")
+			m1 = m1.replace("]]", "")
+			m1 = m1.replace(" ", "")
+			message_arr = m1.split('],[')
 			# Добавить в общий массив
-			arr.append(msg.payload)
+			arr.append(message_arr)
 			global count
-			print("Writing to arr[" + str(count) + "]")
+			print("Writing to arr[" + str(count) + "]. " + "message_arr = " + str(message_arr))
 			count = count + 1
-			
-			# Надо преобразовать из STRING в LIST с помощью strip!!!!!!!!!!!
 			
 		# Запрос события от eH_serv
 		else:
 			# Событие 1 -- пожать руку
-			if msg.payload == "event_1":
+			if message == "event_1":
 				event_1_arr = arr[0]
 				# Преобразуем в строку с разделением запятой и передаём на роборуку
 				for e in event_1_arr:
-					e_str = ','.join(map(str, e))
-					publish.single("dS_serv", payload = e_str, hostname = "127.0.0.1", port = 1883)
-					print("📧 SEND: " + e_str)
+					publish.single("dS_serv", payload = e, hostname = "127.0.0.1", port = 1883)
+					print("EVENT_1. 📧 SEND: " + e)
 			
 			# Событие 2 -- взять предмет
-			elif msg.payload == "event_2":
+			elif message == "event_2":
 				event_2_arr = arr[1]
 				# Преобразуем в строку с разделением запятой и передаём на роборуку
 				for e in event_2_arr:
-					e_str = ','.join(map(str, e))
-					publish.single("dS_serv", payload = e_str, hostname = "127.0.0.1", port = 1883)
-					print("📧 SEND: " + e_str)
+					publish.single("dS_serv", payload = e, hostname = "127.0.0.1", port = 1883)
+					print("📧 SEND: " + e)
 			
 			# Событие 3 -- показать жест
-			elif msg.payload == "event_3":
+			elif message == "event_3":
 				event_3_arr = arr[2]
 				# Преобразуем в строку с разделением запятой и передаём на роборуку
 				for e in event_3_arr:
-					e_str = ','.join(map(str, e))
-					publish.single("dS_serv", payload = e_str, hostname = "127.0.0.1", port = 1883)
-					print("📧 SEND: " + e_str)
+					publish.single("dS_serv", payload = e, hostname = "127.0.0.1", port = 1883)
+					print("📧 SEND: " + e)
 			
 			# Неизвестное событие
 			else:
