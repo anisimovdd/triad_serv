@@ -7,6 +7,7 @@ app = Flask(__name__)
 MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = "glove"
+MQTT_CLIENT_ID = "pP_serv"
 
 @app.route('/')
 def pP_serv():
@@ -25,9 +26,11 @@ def pP_serv():
 	# Обработка сообщений от перчатки	
 	def on_message(client, userdata, msg):
 		message = str(msg.payload, 'utf-8')
+		message = message.replace("#", "") # убираем преамбулу Бахадыра
 		print("\n> TOPIC: " + msg.topic + " 📩 MESSAGE: " + message)
 		
 		# Преобразование в массив целых чисел
+		#m1 = message.replace("#", "") # убираем преамбулу Бахадыра
 		message_arr = message.split(',')
 		message_arr = list(map(int, message_arr))
 		
@@ -70,7 +73,7 @@ def pP_serv():
 			arr.append(message_arr)
 			print("Learning MODE. Array formation.")
 
-	client = mqtt.Client()
+	client = mqtt.Client(MQTT_CLIENT_ID)
 	client.on_connect = on_connect
 	client.on_message = on_message
 	client.connect(MQTT_BROKER, MQTT_PORT, 60)

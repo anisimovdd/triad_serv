@@ -7,6 +7,7 @@ app = Flask(__name__)
 MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = "robohand"
+MQTT_CLIENT_ID = "eH_serv"
 
 @app.route('/')
 def eH_serv():
@@ -56,7 +57,7 @@ def eH_serv():
 		else:
 			print("Неизвестное событие")
 	
-	client = mqtt.Client()
+	client = mqtt.Client(MQTT_CLIENT_ID)
 	client.on_connect = on_connect
 	client.on_message = on_message
 	client.connect(MQTT_BROKER, MQTT_PORT, 60)

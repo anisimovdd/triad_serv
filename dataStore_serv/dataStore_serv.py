@@ -7,6 +7,7 @@ app = Flask(__name__)
 MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = [["pP_serv", 0], ["eH_serv", 0]]
+MQTT_CLIENT_ID = "dS_serv"
 count = 0
 
 @app.route('/')
@@ -70,7 +71,7 @@ def dS_serv():
 			else:
 				print("Неизвестное событие")
 	
-	client = mqtt.Client()
+	client = mqtt.Client(MQTT_CLIENT_ID)
 	client.on_connect = on_connect
 	client.on_message = on_message
 	client.connect(MQTT_BROKER, MQTT_PORT, 60)
