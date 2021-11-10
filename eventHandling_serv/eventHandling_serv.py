@@ -31,10 +31,15 @@ def eH_serv():
 		message_arr = list(map(int, message_arr))
 				
 		# Предварительно массив будет иметь следующюю структуру:
-		# message_arr = [ T1, T2, T3, T4, T5, S1, S2, S3, S4, S5 ], где
+		# message_arr = [ T1, T2, T3, T4, T5, T6, S1, S2, S3, S4, S5 ], где
 		# Tn - показания датчиков температуры
 		# Sn - показания датчиков давления
 		
+		# Обратная связь для лампочки
+		# message = "111,222,333,444,555,666,10,20,30,40,50"
+		diod_feedback = message.replace(",","")[:-10]
+		publish.single("diod_feedback", payload = diod_feedback, hostname = "127.0.0.1", port = 1883)
+				
 		# Событие 1 -- пожать руку
 		if (29 < message_arr[0] < 45):
 			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
