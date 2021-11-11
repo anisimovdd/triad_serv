@@ -36,10 +36,15 @@ def eH_serv():
 		# Sn - показания датчиков давления
 		
 		# Обратная связь для лампочки
-		# message = "111,222,333,444,555,666,10,20,30,40,50"
-		diod_feedback = message.replace(",","")[:-10]
-		publish.single("diod_feedback", payload = diod_feedback, hostname = "127.0.0.1", port = 1883)
-				
+		# message = "111,222,333,444,555,666,100,200,300,400,500"
+		# Передача без запятых
+		d1 = message.replace(",","") 
+		diod_feedback = d1[:15] + d1[18:] + "#"
+		# Передача с запятыми
+		#d1 = message
+		#diod_feedback = d1[:19] + d1[23:] + "#"
+		publish.single("eH_feedback", payload = diod_feedback, hostname = "127.0.0.1", port = 1883)
+		
 		# Событие 1 -- пожать руку
 		if (29 < message_arr[0] < 45):
 			publish.single("eH_serv", payload = "event_1", hostname = "127.0.0.1", port = 1883)
